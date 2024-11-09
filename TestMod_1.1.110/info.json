@@ -1,0 +1,11 @@
+{
+    "name": "mod-test",
+    "version": "0.1.0",
+    "title": "Mod Test",
+    "author": "Malu38",
+    "contact": "",
+    "homepage": "",
+    "description": "Mon mod de test",
+    "dependencies": ["base >= 1.1"],
+    "factorio_version": "1.1"
+}
