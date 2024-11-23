@@ -6,6 +6,6 @@
     "contact": "",
     "homepage": "",
     "description": "Mod to change game speed and set speed to 1 when bitter attacks you.",
-    "dependencies": ["base >= 1.1"],
-    "factorio_version": "1.1"
+    "dependencies": ["base >= 2.0"],
+    "factorio_version": "2.0"
 }
