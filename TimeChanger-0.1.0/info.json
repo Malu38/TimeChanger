@@ -1,11 +1,11 @@
 {
-    "name": "mod-test",
+    "name": "time-changer",
     "version": "0.1.0",
-    "title": "Mod Test",
+    "title": "Time Changer",
     "author": "Malu38",
     "contact": "",
     "homepage": "",
-    "description": "Mon mod de test",
+    "description": "Mod to change game speed and set speed to 1 when bitter attacks you.",
     "dependencies": ["base >= 1.1"],
     "factorio_version": "1.1"
 }
