@@ -1,3 +1,22 @@
+data:extend(
+	{
+		{
+			type = "font",
+			name = "timechanger_font",
+			from = "default",
+			border = false,
+			size = 15
+		},
+		{
+			type = "font",
+			name = "timechanger_font_bold",
+			from = "default-bold",
+			border = false,
+			size = 15
+		},
+	}
+)
+
 local default_gui = data.raw["gui-style"].default
 
 default_gui.timechanger_flow_style = 
@@ -21,7 +40,7 @@ default_gui.timechanger_button_style =
 {
 	type="button_style",
 	parent="button",
-	font="timetools_font_bold",
+	font="timechanger_font_bold",
 	align = "center",
 	top_padding = 1,
 	bottom_padding = 0,
