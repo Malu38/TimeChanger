@@ -1,3 +1,4 @@
+local debug_status = nil
 local debug_mod_name = "time-changer"
 local debug_file = debug_mod_name .. "-debug.txt"
 require("utils")
@@ -59,6 +60,8 @@ local function on_gui_click(event)
                 player.print({"mod-messages.timechanger-message-admins-only"})
         end
 end
+
+script.on_event(defines.events.on_gui_click, on_gui_click)
 
 --------------------------------------------------------------------------------------
 
