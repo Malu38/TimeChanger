@@ -9,14 +9,14 @@ data:extend({
     {
         type = "sprite",
         name = "sprite_timechanger_lock_closed",
-        filename = "__TimeChanger__/graphics/padlock_closed.png",
+        filename = "__time-changer__/graphics/padlock_closed.png",
         width = 22,
         height = 30
     },
     {
         type = "sprite",
         name = "sprite_timechanger_lock_open",
-        filename = "__TimeChanger__/graphics/padlock_open.png",
+        filename = "__time-changer__/graphics/padlock_open.png",
         width = 22,
         height = 30
     }
@@ -56,7 +56,7 @@ gui.timechanger_button_style =
 {
 	type="button_style",
 	parent="button",
-	font="timetools_font_bold",
+	font="timechanger_font_bold",
 	align = "center",
 	top_padding = 1,
 	bottom_padding = 0,
