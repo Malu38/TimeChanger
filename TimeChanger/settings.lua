@@ -1,5 +1,12 @@
 data:extend({
     {
+        type = "string-setting",
+        name = "timechanger-default-padlock",
+        setting_type = "startup",
+        default_value = "unlock",
+        allowed_values = {"lock", "unlock"}
+    },
+    {
         type = "int-setting",
         name = "timechanger-max-game-speed",
         setting_type = "runtime-global",
@@ -12,5 +19,5 @@ data:extend({
         setting_type = "runtime-global",
         default_value = 8,
         allowed_values = {2, 4, 8, 16}
-    },
+    }
 })
