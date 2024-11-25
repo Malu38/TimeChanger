@@ -1,11 +1,11 @@
-local debug_status = 1
 local debug_mod_name = "time-changer"
-local debug_file = debug_mod_name .. "-debug.txt"
 require("utils")
+
+local enemies = {}
 
 local function init_globals()
         storage.refresh_speed = storage.refresh_speed or settings.startup["timechanger-default-padlock"].value == "unlock"
-        storage.speed_mem = storage.speed_mem or settings.global["timechanger-max-time-speed"]
+        storage.speed_mem = storage.speed_mem or settings.global["timechanger-max-game-speed"].value
 end
 
 local function init_player(player)
@@ -15,7 +15,7 @@ local function init_player(player)
 end
 
 local function init_players()
-        for player in pairs(game.players) do
+        for _, player in pairs(game.players) do
                 init_player(player)
         end
 end
@@ -44,7 +44,7 @@ script.on_configuration_changed(on_configuration_changed)
 
 function on_player_created(event)
         local player = game.players[event.player_index]
-        
+
         init_player(player)
 end
 
@@ -57,6 +57,23 @@ local function on_player_joined_game(event)
 end
 
 script.on_event(defines.events.on_player_joined_game, on_player_joined_game )
+
+local function on_entity_damaged(event)
+        if storage.refresh_speed then
+                if event.cause.force.name == "enemy" then
+                        game.speed = 1
+                        update_guis()
+                end
+        end
+end
+
+script.on_event(defines.events.on_entity_damaged, on_entity_damaged)
+
+local function on_entity_spawned(event)
+        entity = event.entity
+        table.insert(enemies, entity)
+end
+script.on_event(defines.events.on_entity_spawned, on_entity_spawned)
 
 function on_gui_click(event)
         local player = game.players[event.player_index]
@@ -93,11 +110,11 @@ function build_gui(player)
         local gui1 = player.gui.top.timechanger_flow
         if gui1 == nil then
                 gui1 = player.gui.top.add({type="flow", name="timechanger_flow", direction="horizontal", style="timechanger_flow_style"})
-                gui1.add({type="button", name="timechanger_but_slowest", caption="<<", font_color=colors.lightred, style="timechanger_button_style"})
-                gui1.add({type="button", name="timechanger_but_slower", caption="<", font_color=colors.lightred, style="timechanger_button_style"})
-                gui1.add({type="button", name="timechanger_but_speed", caption="x1", font_color=colors.green, style="timechanger_button_style"})
-                gui1.add({type="button", name="changer_but_faster", caption=">", font_color=colors.lightred, style="timechanger_button_style"})
-                gui1.add({type="button", name="timechanger_but_fastest", caption=">>", font_color=colors.lightred, style="timechanger_button_style"})
+                gui1.add({type="button", name="timechanger_but_slowest", caption="<<", style="timechanger_button_style", font_color=colors.red})
+                gui1.add({type="button", name="timechanger_but_slower", caption="<", style="timechanger_button_style", font_color=colors.red})
+                gui1.add({type="button", name="timechanger_but_speed", caption="x1", style="timechanger_button_style", font_color=colors.green})
+                gui1.add({type="button", name="timechanger_but_faster", caption=">", style="timechanger_button_style", font_color=colors.red})
+                gui1.add({type="button", name="timechanger_but_fastest", caption=">>", style="timechanger_button_style", font_color=colors.red})
                 gui2 = gui1.add({type="sprite-button", name="timechanger_but_lock", style="timechanger_sprite_style"})
                 if storage.refresh_speed then
                         gui2.sprite = "sprite_timechanger_lock_open"
@@ -126,52 +143,11 @@ function update_guis()
                         end
 
                         if storage.refresh_speed then
-                                debug_print("Sprite padlock changed")
                                 flow.timechanger_but_lock.sprite = "sprite_timechanger_lock_open"
                         else
-                                debug_print("Sprite padlock changed")
                                 flow.timechanger_but_lock.sprite = "sprite_timechanger_lock_closed"
                         end
                        
                 end
         end
 end
-
-local interface = {}
-
-function interface.reset()
-	for _, player in pairs(game.players) do
-		if player.gui.top.timechanger_flow then	
-			player.gui.top.timechanger_flow.destroy()
-		end
-	end
-	
-	update_guis()
-end
-
-function interface.setspeed(speed)
-	if speed == nil then speed = 1 end
-	speed = math.floor(speed) -- ensure integer
-	if speed < 1 then speed = 1 end
-	if speed > settings.global["timechanger-max-game-speed"].value then
-		speed = settings.global["timechanger-min-game-speed"].value
-	end
-	storage.speed = speed
-	update_guis()
-end
-
-function interface.off()
-	storage.display = false
-	
-	for _, player in pairs(game.players) do
-		if player.connected and player.gui.top.timechanger_flow then player.gui.top.timechanger_flow.destroy() end
-	end
-end
-
-function interface.on( )
-	storage.display = true
-
-	update_guis()
-end
-
-remote.add_interface("timechanger", interface)
